@@ -20,7 +20,7 @@ RUN python -m venv /app/.venv
 ENV PATH="/app/.venv/bin:$PATH"
 
 RUN . /app/.venv/bin/activate && \
-    python -m pip install -r requirements.txt
+    /app/.venv/bin/pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /app
 COPY . /app
@@ -35,4 +35,4 @@ USER appuser
 RUN echo "Using gunicorn from: $(which gunicorn)"
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["/app/.venv/bin/gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
